@@ -1,0 +1,21 @@
+name: mercy_pay_flutter
+description: Mercy Pay pour Flutter. Un bouton et une fonction qui ouvrent la page de paiement hébergée, sans clé API dans l'app.
+version: 0.1.0
+homepage: https://docs.mercy-pay.com
+repository: https://github.com/mercy-pay/mercy-pay-flutter
+issue_tracker: https://github.com/mercy-pay/mercy-pay-flutter/issues
+topics: [payments, mobile-money, checkout]
+
+environment:
+  sdk: ^3.4.0
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
