@@ -2,3 +2,7 @@
 pubspec.lock
 build/
 .flutter-plugins*
+# Un SDK téléchargé dans le dossier ne doit jamais partir dans le paquet.
+dart-sdk/
+dart.zip
+flutter/
