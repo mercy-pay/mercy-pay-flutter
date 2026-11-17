@@ -1,8 +1,11 @@
-/// Mercy Pay pour Flutter : ouvrir la page de paiement hébergée.
+/// Mercy Pay pour Flutter : le formulaire de paiement dans votre app, ou la page hébergée.
 ///
 /// Votre app ne détient jamais la clé API. Elle demande à votre serveur de créer la session
-/// de paiement, puis ouvre l'adresse `checkout_url` que le serveur lui renvoie.
+/// de paiement, puis affiche le formulaire avec son `client_secret`, ou ouvre son
+/// `checkout_url`.
 library;
+
+export 'src/embedded_checkout.dart';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -1,6 +1,11 @@
 # Mercy Pay pour Flutter
 
-Ouvrez la page de paiement hébergée de [Mercy Pay](https://mercy-pay.com) depuis votre app Flutter, sur Android et iOS. Mobile money et carte, sans aucune donnée de paiement dans votre app.
+Encaissez avec [Mercy Pay](https://mercy-pay.com) depuis votre app Flutter, sur Android et iOS, de deux façons :
+
+- `MercyPayEmbeddedCheckout` affiche le formulaire de paiement dans votre app : mobile money et carte, 3D Secure comprise ;
+- `MercyPayCheckoutButton` ouvre la page de paiement hébergée dans le navigateur intégré.
+
+Aucune donnée de paiement ne passe par votre app.
 
 ```sh
 flutter pub add mercy_pay_flutter
@@ -15,6 +20,32 @@ flutter pub add mercy_pay_flutter
 5. L'app demande l'état de la commande à votre serveur. Seul le webhook `payment.succeeded`, reçu et vérifié par le serveur, prouve le paiement.
 
 Côté serveur, utilisez un SDK officiel : [Dart](https://github.com/mercy-pay/mercy-pay-dart), [Node.js](https://github.com/mercy-pay/mercy-pay-node), [PHP](https://github.com/mercy-pay/mercy-pay-php), [Python](https://github.com/mercy-pay/mercy-pay-python)…
+
+## Le formulaire dans votre app
+
+Votre serveur crée la session avec `ui_mode: "embedded"` et renvoie son `client_secret`. Affichez le formulaire sur un écran à lui :
+
+```dart
+import 'package:mercy_pay_flutter/mercy_pay_flutter.dart';
+
+Scaffold(
+  appBar: AppBar(title: const Text('Paiement')),
+  body: MercyPayEmbeddedCheckout(
+    clientSecret: clientSecret,
+    appearance: const MercyPayAppearance(radius: 12),
+    onSuccess: (event) => Navigator.of(context).pop(true),
+    onError: (event) => Navigator.of(context).pop(false), // session introuvable : créez-en une autre
+  ),
+)
+```
+
+Les événements : `onReady`, `onProcessing`, `onSuccess`, `onFailure`, `onExpired`, `onError`, et `onEvent` pour tous. Chacun donne `checkoutSession`, `payment` et, en cas d'échec, `message`.
+
+- Android : l'app doit avoir la permission `INTERNET`, et `minSdkVersion` 21 au moins.
+- Apple Pay et Google Pay ne s'affichent pas dans une vue web : le client paie par mobile money ou par carte.
+- `onSuccess` met à jour votre app. Seul le webhook `payment.succeeded`, reçu par votre serveur, prouve le paiement.
+
+Voir le [guide du paiement intégré](https://docs.mercy-pay.com/payments/embedded).
 
 ## Le bouton
 

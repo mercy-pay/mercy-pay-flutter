@@ -4,8 +4,20 @@ on:
   push:
     tags: ["v*"]
 
+# pub.dev trusts this repository through GitHub's identity token (automated publishing),
+# no secret to store. setup-dart hands the token to pub; Flutter is needed because the
+# package depends on the Flutter SDK.
 jobs:
   publish:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter pub publish --force
